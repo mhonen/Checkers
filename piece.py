@@ -1,12 +1,13 @@
 ###############################################################################
 #
 # File: piece.py
-# Version: 0.1 (23 Aug 23)
+# Version: 0.2 (23 Aug 23)
 # Remarks: Piece class that holds all the attributes of each piece on the board
+#          (v 0.2) updated movement.
 ###############################################################################
 
 import pygame
-from .constants import RED, WHITE, SQUARE_SIZE, GREY
+from .constants import RED, WHITE, SQUARE_SIZE, GREY, CROWN
 class Piece:
     #Set padding and outline size of each piece
     PADDING = 10
@@ -42,6 +43,16 @@ class Piece:
         radius = SQUARE_SIZE//2 - self.PADDING
         pygame.draw.circle(win, GREY, (self.x, self.y), radius + self.OUTLINE)
         pygame.draw.circle(win, self.color, (self.x, self.y), radius)
-    # ALlows the use of string to define a piece object.    
+        
+        if self.king:
+            win.blit(CROWN, (self.x - CROWN.get_width()//2, self.y - CROWN.get_height()//2))
+    
+    # Update piece row and col to allow moving onto other squares.        
+    def move(self, row, col):
+        self.row = row
+        self.col = col
+        self.calc_pos()
+        
+    # Allows the use of string to define a piece object.    
     def __repr__(self):
         return str(self.color)
